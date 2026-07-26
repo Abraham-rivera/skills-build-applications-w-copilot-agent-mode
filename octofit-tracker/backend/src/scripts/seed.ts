@@ -64,7 +64,13 @@ async function seedDatabase() {
     console.log('Seeded activities:', activities.length);
 
     console.log('Database seeding complete');
-    await mongoose.disconnect();
+    // If running in short-lived seed mode, disconnect. If we're running in-memory for dev,
+    // keep the connection open so the server can reuse it (MONGODB_MEMORY=1).
+    if (process.env.MONGODB_MEMORY !== '1') {
+      await mongoose.disconnect();
+    } else {
+      console.log('Keeping mongoose connection open for in-memory dev');
+    }
   } catch (error) {
     console.error('Error seeding database:', error);
     process.exit(1);

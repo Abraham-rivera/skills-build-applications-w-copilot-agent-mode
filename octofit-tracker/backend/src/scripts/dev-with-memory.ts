@@ -7,6 +7,7 @@ async function main() {
 
   // Ensure downstream imports see the env var
   process.env.MONGODB_URI = uri;
+  process.env.MONGODB_MEMORY = '1';
 
   // Run seed script (it auto-executes on import)
   console.log('Running seed script...');
